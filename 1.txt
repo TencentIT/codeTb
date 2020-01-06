@@ -1,1 +1,84 @@
-8
+#include <iostream>
+	#include <string>
+	#include <vector>
+
+	char NumToInt(unsigned int number)
+	{
+		char map[] = { 'F', 'G', 'R', 'S', 'T', 'L', 'M', 'N', 'O', 'P', 'Q',\
+			'W', 'X', 'Y', 'Z', 'U', 'A', 'G', 'H', 'I', 'J', 'K',\
+			'B', 'C', 'D', 'E', 'l', 'm', 'n', 'o', 'p', 'i', 'j', 'k', 'f', 'g', 'h',\
+			'a', 'b', 'c', 'd', 'e', 'q', 'r', 'w', 'x', 'y', 'z', 's', 't', 'u', 'v' };
+
+		return map[number];
+	}
+
+	bool anylise(std::vector<unsigned int> value, char &character)
+	{
+		if (value.size() == 0)
+			return true;
+
+		unsigned int result=0;
+		for (unsigned int i = 0; i < value.size(); i++)
+		{
+			result += value[i] << (2, value.size() - i-1);
+		}
+		if (result > 52 )
+			return false;
+		character = NumToInt(result);
+		return true;
+	}
+
+	void test(const char* str, unsigned int len)
+	{
+		int count = 0; //num of #
+		std::vector<unsigned int> num;
+
+		for (unsigned int i = 0; i < len; i++)
+		{
+			switch (str[i])
+			{
+			case '.':
+				num.push_back(1);
+				count = 0;
+				break;
+			case '-':
+				num.push_back(0);
+				count = 0;
+				break;
+			case '#':
+				if (count == 0 && num.size() >0)
+				{
+					char character = ' ';
+					bool success = anylise(num, character);
+					num.clear();
+					if (success)
+						std::cout << character;
+					else
+						std::cout << "ERROR";
+					count++;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		char cha = ' ';
+		bool success = anylise(num, cha);
+		num.clear();
+		if (success)
+			std::cout << cha;
+		else
+			std::cout << "ERROR";
+	}
+
+	int main(int argc, char** argv)
+	{
+		std::string s("--.");
+		test(s.c_str(), s.length());
+
+		return 0;
+	}
+ 
+————————————————
+版权声明：本文为CSDN博主「溪叶」的原创文章，遵循 CC 4.0 BY-SA 版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/u010724874/article/details/82354495
